@@ -22,8 +22,10 @@
     "test": "vitest --watch"
   },
   "dependencies": {
+    "@ant-design/icons": "5.x",
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
+    "antd": "^5.26.7",
     "electron-updater": "^6.3.9",
     "react-router": "^7.7.1",
     "react-router-dom": "^7.7.1",
