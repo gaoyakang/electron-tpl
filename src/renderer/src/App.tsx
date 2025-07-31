@@ -1,5 +1,5 @@
 function App(): React.JSX.Element {
-  return <div>hello,world</div>
+  return <div data-testid="app-wrapper">hello world</div>
 }
 
 export default App
