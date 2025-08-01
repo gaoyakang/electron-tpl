@@ -22,6 +22,7 @@ export interface BrowserWindowOptions {
   sandbox?: boolean // 是否沙盒化，将渲染进程与底层操作系统资源隔离，限制渲染进程对文件系统、网络等的直接访问权限
   contextIsolation?: boolean // 上下文隔离，隔离预加载脚本与网页内容的上下文环境，确保两者使用独立的 window 对象
   dev?: boolean // 是否为开发者模式
+  windowName?: string // 窗口名称,它需要保证render/src/xx 和xx.html 文件名一致
 }
 
 // windowLifecycle.ts中窗口生命周期相关的类型

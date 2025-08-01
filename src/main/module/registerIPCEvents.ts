@@ -13,6 +13,16 @@ import {
 import ClipboardManager from './ClipboardManager'
 import { DialogOptionsType, processedSourcesType } from './types'
 import { autoUpdateInit } from './autoUpdater'
+import { createWindow } from './createWindow'
+
+// 创建窗口
+function setupCreateWindow(windowInstance: BrowserWindow): void {
+  ipcMain.handle('create-window', async (_e, name: string): Promise<string> => {
+    createWindow({ windowName: name })
+    return 'create-window success'
+  })
+}
+
 // 设置窗口大小
 function setupSetWindowSizeHandler(windowInstance: BrowserWindow): void {
   ipcMain.handle(
@@ -431,6 +441,7 @@ async function setupGetVersionHandler(): Promise<void> {
 
 // 注册所有IPC处理器
 export function registerIPCEvents(windowInstance: BrowserWindow): BrowserWindow {
+  setupCreateWindow(windowInstance)
   setupSetWindowSizeHandler(windowInstance) // 设置窗口尺寸
   setupSetWindowPositionHandler(windowInstance) // 设置窗口位置
   setupMaximizeWindowHandler(windowInstance) // 设置窗口最大化

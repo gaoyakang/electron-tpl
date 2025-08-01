@@ -3,6 +3,7 @@ import icon from '../../../resources/icon.png?asset'
 import { join } from 'path'
 import { BrowserWindowOptions, WindowEventConfig } from './types'
 import { manageWindowLifecycle } from '../lifecycle/windowLifecycle'
+import { is } from '@electron-toolkit/utils'
 
 export const createWindow = (
   userBrowserWindowOptions: BrowserWindowOptions = {}
@@ -23,7 +24,8 @@ export const createWindow = (
     rendererUrl: process.env['ELECTRON_RENDERER_URL'] || '',
     transparent: false, // 设置窗口透明
     backgroundColor: '#00000000', // 设置背景颜色为透明
-    dev: true // 默认开发环境
+    dev: true, // 默认开发环境
+    windowName: 'mainwin'
   }
 
   // 合并默认配置和传入的配置
@@ -66,6 +68,21 @@ export const createWindow = (
     //   once: true
     // }
   ] as WindowEventConfig[])
+
+  // 加载内容
+  if (is.dev) {
+    // 开发环境下加载url
+    mainWindow.loadURL(
+      process.env['ELECTRON_RENDERER_URL'] + '/' + mergedBrowserWindowOptions.windowName || ''
+    )
+    // 开发环境下自动打开 DevTools
+    mainWindow.webContents.openDevTools({ mode: 'detach' })
+  } else {
+    // 生产环境下打开打包的html
+    mainWindow.loadFile(
+      join(__dirname, `../renderer/${mergedBrowserWindowOptions.windowName}.html`)
+    )
+  }
 
   // 返回窗口实例
   return mainWindow

@@ -1,17 +1,16 @@
 import { StepForwardOutlined } from '@ant-design/icons'
 import { Button } from 'antd'
-import { useEffect } from 'react'
 
 function App(): React.JSX.Element {
   const handleMainProcess = async (): Promise<void> => {
-    // await window.api.showNotification({ title: '标题' })
+    await window.api.setupCreateWindow('settingwin')
   }
-  useEffect(() => {
-    handleMainProcess()
-  }, [])
+
   return (
     <div data-testid="app-wrapper">
-      <Button type="primary">Primary Button</Button>
+      <Button type="primary" onClick={handleMainProcess}>
+        打开设置窗口
+      </Button>
       <StepForwardOutlined />
     </div>
   )

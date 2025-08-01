@@ -6,6 +6,7 @@ declare global {
   interface Window {
     electron: ElectronAPI
     api: {
+      setupCreateWindow: (name: string) => void // 创建窗口
       setupSetWindowSize: (size: { width: number; height: number }) => void // 设置窗口大小
       setupSetWindowPosition: (position: { x: number; y: number }) => void // 设置窗口大小
       setupMaximizeWindow: () => void // 窗口最大化
