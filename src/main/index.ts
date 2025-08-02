@@ -5,13 +5,11 @@ import { setupAppLifecycle } from './lifecycle/appLifecycle'
 import { registerShortcuts } from './module/shortcut'
 import { initMenu } from './module/createMenu'
 import { initlog } from './module/initLog'
-import * as log from 'electron-log'
 
 // app生命周期
 app.whenReady().then(() => {
-  // 初始化日志
+  // 0.初始化日志
   initlog()
-  log.info('app ready')
   // 1.创建主窗口
   let mainWindow: BrowserWindow = createWindow()
   // 3.注册ipc相关事件

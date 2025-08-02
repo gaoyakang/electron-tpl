@@ -4,6 +4,7 @@ import * as path from 'path'
 import * as fs from 'fs'
 import { exec } from 'child_process'
 import semver from 'semver'
+import { config } from './config'
 
 export function autoUpdateInit(): void {
   console.log('enter autoUpdateInit...')
@@ -14,7 +15,7 @@ export function autoUpdateInit(): void {
 // 检查更新
 function checkForUpdates(): void {
   const currentVersion = app.getVersion()
-  const updateUrl = 'http://localhost:3000/darwin?version=' + currentVersion
+  const updateUrl = config.dev.versionUpdate.updateUrl + currentVersion
 
   if (updateUrl.includes('localhost')) return
   http
@@ -36,7 +37,7 @@ function checkForUpdates(): void {
           dialog
             .showMessageBox(windowInstance, {
               type: 'info',
-              title: '更新可用',
+              title: config.dev.versionUpdate.updateTitle,
               message: `发现新版本 ${updateInfo.name}，当前版本 ${currentVersion}。是否立即更新？`,
               buttons: ['是', '否']
             })
@@ -81,8 +82,8 @@ function installUpdate(filePath): void {
   dialog
     .showMessageBox(windowInstance, {
       type: 'info',
-      title: '更新完成',
-      message: '更新文件已下载完成，即将开始安装。',
+      title: config.dev.versionUpdate.installTitle,
+      message: config.dev.versionUpdate.installMessage,
       buttons: ['确定']
     })
     .then(() => {

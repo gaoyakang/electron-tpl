@@ -1,6 +1,6 @@
 import { is } from '@electron-toolkit/utils'
 import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray } from 'electron'
-import path from 'path'
+import { config } from './config'
 
 // 1.创建窗口菜单
 function createWindowMenu(windowInstance: BrowserWindow): void {
@@ -9,7 +9,7 @@ function createWindowMenu(windowInstance: BrowserWindow): void {
       label: 'View',
       submenu: [
         {
-          label: 'Toggle Developer Tools',
+          label: '开发者模式',
           accelerator: 'Alt+CmdOrCtrl+I',
           click: (menuItem, window, event) => {
             console.log('Toggle Developer Tools clicked')
@@ -18,13 +18,13 @@ function createWindowMenu(windowInstance: BrowserWindow): void {
           }
         },
         {
-          label: 'Undo',
+          label: '撤销',
           accelerator: 'CmdOrCtrl+Z',
           role: 'undo'
         },
         {
           // 强制刷新
-          label: 'Reload',
+          label: '强制刷新',
           accelerator: 'CmdOrCtrl+R',
           role: 'forceReload'
         }
@@ -52,15 +52,6 @@ function createContextMenu(windowInstance: BrowserWindow): void {
       label: 'View',
       submenu: [
         {
-          label: 'Toggle Developer Tools',
-          accelerator: 'Alt+CmdOrCtrl+I',
-          click: (_menuItem, _window, _event) => {
-            console.log('Toggle Developer Tools clicked')
-            console.log(_menuItem, _window, _event)
-            windowInstance.webContents.toggleDevTools()
-          }
-        },
-        {
           label: 'Undo',
           accelerator: 'CmdOrCtrl+Z',
           role: 'undo'
@@ -83,12 +74,9 @@ function createContextMenu(windowInstance: BrowserWindow): void {
 
 // 3.托盘菜单
 async function createTrayMenu(): Promise<void> {
-  const prodIconPath = path.join(app.getAppPath(), '../app.asar.unpacked/resources/tray-icon.ico')
+  const prodIconPath = config.dev.menu.trayMenu.prodIconPath
 
-  // const iconPath = is.dev ? 'build/icons/16x16.png' : path.join(appPath, '../../icon.png')
-  const iconPath = is.dev ? 'build/icons/16x16.png' : prodIconPath
-
-  // 'https://fastly.picsum.photos/id/505/200/300.jpg?hmac=sM40cBTZhT04SPBOcg3Oj_CJ1XVd3f4FX5u-tCusbDk'
+  const iconPath = is.dev ? config.dev.menu.trayMenu.devIconPath : prodIconPath
 
   const trayIcon = nativeImage.createFromPath(iconPath)
   const tray = new Tray(trayIcon)
@@ -96,7 +84,7 @@ async function createTrayMenu(): Promise<void> {
     { label: 'Item1', type: 'radio', click: () => handleMenuItemClick(1) },
     { label: 'Item3', type: 'radio', checked: true }
   ])
-  tray.setToolTip('This is my application.')
+  tray.setToolTip(config.dev.menu.trayMenu.toolTip)
   tray.setContextMenu(contextMenu)
 }
 // 处理菜单项点击事件的函数
@@ -107,20 +95,7 @@ function handleMenuItemClick(menuItemIndex): void {
 
 // 4.Dock 菜单
 function createDockMenu(): void {
-  const dockMenu = Menu.buildFromTemplate([
-    {
-      label: 'New Window',
-      click() {
-        console.log('New Window')
-      },
-      icon: 'resources/icon.png'
-    },
-    {
-      label: 'New Window with Settings',
-      submenu: [{ label: 'Basic' }, { label: 'Pro' }]
-    },
-    { label: 'New Command...' }
-  ])
+  const dockMenu = Menu.buildFromTemplate(config.dev.menu.dockMenu)
   app.dock?.setMenu(dockMenu)
 }
 

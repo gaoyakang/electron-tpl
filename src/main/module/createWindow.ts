@@ -4,35 +4,17 @@ import { join } from 'path'
 import { BrowserWindowOptions, WindowEventConfig } from './types'
 import { manageWindowLifecycle } from '../lifecycle/windowLifecycle'
 import { is } from '@electron-toolkit/utils'
+import { config } from './config'
 
 export const createWindow = (
   userBrowserWindowOptions: BrowserWindowOptions = {}
 ): BrowserWindow => {
   // 默认窗口属性，后期增加的可以继续添加到这里
-  const defaultBrowserWindowOptions = {
-    width: 300,
-    height: 300,
-    maxWidth: 1000,
-    maxHeight: 670,
-    minHeight: 670,
-    minWidth: 250,
-    show: false,
-    autoHideMenuBar: true,
-    preload: join(__dirname, '../preload/index.js'),
-    sandbox: false,
-    contextIsolation: true,
-    rendererUrl: process.env['ELECTRON_RENDERER_URL'] || '',
-    transparent: false, // 设置窗口透明
-    backgroundColor: '#00000000', // 设置背景颜色为透明
-    dev: true, // 默认开发环境
-    windowName: 'mainwin',
-    icon: join(__dirname, '../resources/icon.png')
-  }
-  // console.log('--', join(__dirname, '../resources/icon.png'))
+  const defaultBrowserWindowOptions = config.dev.defaultWin
+
   // 合并默认配置和传入的配置
   const mergedBrowserWindowOptions = { ...defaultBrowserWindowOptions, ...userBrowserWindowOptions }
 
-  console.log(mergedBrowserWindowOptions.icon)
   // 创建窗口
   let mainWindow = new BrowserWindow({
     // 尺寸相关
@@ -47,7 +29,6 @@ export const createWindow = (
     autoHideMenuBar: mergedBrowserWindowOptions.autoHideMenuBar,
     transparent: mergedBrowserWindowOptions.transparent,
     backgroundColor: mergedBrowserWindowOptions.backgroundColor,
-    icon: mergedBrowserWindowOptions.icon,
     // titleBarStyle: 'hidden', // 隐藏默认标题栏，其余不可拖动，可添加app-region: drag 样式重新定位窗口
     // 平台相关
     ...(process.platform === 'linux' ? { icon } : {}),

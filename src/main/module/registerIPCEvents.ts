@@ -281,7 +281,6 @@ async function setupShowDialogHandler(windowInstance): Promise<void> {
 // menu相关
 async function setupCreateMenuHandler(windowInstance): Promise<void> {
   ipcMain.handle('create-menu', async (_e, options): Promise<string> => {
-    console.log('options', options)
     // 创建 ShareMenu 对象
     const shareMenu = new ShareMenu({
       filePaths: [

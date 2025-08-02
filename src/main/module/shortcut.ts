@@ -1,22 +1,23 @@
 import { app, BrowserWindow, globalShortcut } from 'electron'
+import { config } from './config'
 
 // 设置窗口大小
 export function setupCloseWindowHandler(): void {
-  globalShortcut.register('Ctrl+Q', () => {
+  globalShortcut.register(config.dev.shortcut.closeWindow, () => {
     app.quit()
   })
 }
 
 // 刷新页面
 function setupReloadHandler(mainWindow: BrowserWindow): void {
-  globalShortcut.register('Ctrl+R', () => {
+  globalShortcut.register(config.dev.shortcut.refreshWindow, () => {
     mainWindow.reload()
   })
 }
 
 // 最小化窗口
 function setupMinimizeHandler(mainWindow: BrowserWindow): void {
-  globalShortcut.register('Ctrl+M', () => {
+  globalShortcut.register(config.dev.shortcut.minimizeWindow, () => {
     mainWindow.minimize()
   })
 }
