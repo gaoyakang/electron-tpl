@@ -1,6 +1,4 @@
 import { BrowserWindow, shell } from 'electron'
-import { is } from '@electron-toolkit/utils'
-import { join } from 'path'
 import { EventCallback, EventName, WindowEventConfig } from '../module/types'
 
 // 管理窗口生命周期

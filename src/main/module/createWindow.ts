@@ -25,12 +25,14 @@ export const createWindow = (
     transparent: false, // 设置窗口透明
     backgroundColor: '#00000000', // 设置背景颜色为透明
     dev: true, // 默认开发环境
-    windowName: 'mainwin'
+    windowName: 'mainwin',
+    icon: join(__dirname, '../resources/icon.png')
   }
-
+  // console.log('--', join(__dirname, '../resources/icon.png'))
   // 合并默认配置和传入的配置
   const mergedBrowserWindowOptions = { ...defaultBrowserWindowOptions, ...userBrowserWindowOptions }
 
+  console.log(mergedBrowserWindowOptions.icon)
   // 创建窗口
   let mainWindow = new BrowserWindow({
     // 尺寸相关
@@ -45,6 +47,7 @@ export const createWindow = (
     autoHideMenuBar: mergedBrowserWindowOptions.autoHideMenuBar,
     transparent: mergedBrowserWindowOptions.transparent,
     backgroundColor: mergedBrowserWindowOptions.backgroundColor,
+    icon: mergedBrowserWindowOptions.icon,
     // titleBarStyle: 'hidden', // 隐藏默认标题栏，其余不可拖动，可添加app-region: drag 样式重新定位窗口
     // 平台相关
     ...(process.platform === 'linux' ? { icon } : {}),

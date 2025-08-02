@@ -14,9 +14,10 @@ import ClipboardManager from './ClipboardManager'
 import { DialogOptionsType, processedSourcesType } from './types'
 import { autoUpdateInit } from './autoUpdater'
 import { createWindow } from './createWindow'
+import { is } from '@electron-toolkit/utils'
 
 // 创建窗口
-function setupCreateWindow(windowInstance: BrowserWindow): void {
+function setupCreateWindow(): void {
   ipcMain.handle('create-window', async (_e, name: string): Promise<string> => {
     createWindow({ windowName: name })
     return 'create-window success'
@@ -280,6 +281,7 @@ async function setupShowDialogHandler(windowInstance): Promise<void> {
 // menu相关
 async function setupCreateMenuHandler(windowInstance): Promise<void> {
   ipcMain.handle('create-menu', async (_e, options): Promise<string> => {
+    console.log('options', options)
     // 创建 ShareMenu 对象
     const shareMenu = new ShareMenu({
       filePaths: [
@@ -342,6 +344,9 @@ async function setupShowNotificationHandler(): Promise<void> {
 // http请求
 async function setupSendRequestHandler(): Promise<void> {
   ipcMain.handle('send-request', async (_e, options): Promise<string> => {
+    if (is.dev) {
+      console.log('send-request', options)
+    }
     // console.log('send-request', _e, options)
     // 发起请求
     // https://www.cnuseful.com/api/index/weiboHot
@@ -441,7 +446,7 @@ async function setupGetVersionHandler(): Promise<void> {
 
 // 注册所有IPC处理器
 export function registerIPCEvents(windowInstance: BrowserWindow): BrowserWindow {
-  setupCreateWindow(windowInstance)
+  setupCreateWindow()
   setupSetWindowSizeHandler(windowInstance) // 设置窗口尺寸
   setupSetWindowPositionHandler(windowInstance) // 设置窗口位置
   setupMaximizeWindowHandler(windowInstance) // 设置窗口最大化

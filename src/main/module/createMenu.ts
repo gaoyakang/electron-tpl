@@ -1,4 +1,6 @@
+import { is } from '@electron-toolkit/utils'
 import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray } from 'electron'
+import path from 'path'
 
 // 1.创建窗口菜单
 function createWindowMenu(windowInstance: BrowserWindow): void {
@@ -80,8 +82,15 @@ function createContextMenu(windowInstance: BrowserWindow): void {
 }
 
 // 3.托盘菜单
-function createTrayMenu(): void {
-  const trayIcon = nativeImage.createFromPath('build/icons/icons/16x16.png')
+async function createTrayMenu(): Promise<void> {
+  const prodIconPath = path.join(app.getAppPath(), '../app.asar.unpacked/resources/tray-icon.ico')
+
+  // const iconPath = is.dev ? 'build/icons/16x16.png' : path.join(appPath, '../../icon.png')
+  const iconPath = is.dev ? 'build/icons/16x16.png' : prodIconPath
+
+  // 'https://fastly.picsum.photos/id/505/200/300.jpg?hmac=sM40cBTZhT04SPBOcg3Oj_CJ1XVd3f4FX5u-tCusbDk'
+
+  const trayIcon = nativeImage.createFromPath(iconPath)
   const tray = new Tray(trayIcon)
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Item1', type: 'radio', click: () => handleMenuItemClick(1) },
@@ -103,7 +112,8 @@ function createDockMenu(): void {
       label: 'New Window',
       click() {
         console.log('New Window')
-      }
+      },
+      icon: 'resources/icon.png'
     },
     {
       label: 'New Window with Settings',

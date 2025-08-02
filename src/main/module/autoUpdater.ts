@@ -8,7 +8,7 @@ import semver from 'semver'
 export function autoUpdateInit(): void {
   console.log('enter autoUpdateInit...')
   // 因为要求服务器一直开着后续才不会报错，所以这里先注释掉
-  // checkForUpdates()
+  checkForUpdates()
 }
 
 // 检查更新
@@ -16,6 +16,7 @@ function checkForUpdates(): void {
   const currentVersion = app.getVersion()
   const updateUrl = 'http://localhost:3000/darwin?version=' + currentVersion
 
+  if (updateUrl.includes('localhost')) return
   http
     .get(updateUrl, (res) => {
       if (res.statusCode === 204) {

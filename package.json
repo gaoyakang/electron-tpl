@@ -19,7 +19,8 @@
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "electron-vite build && electron-builder --mac",
     "build:linux": "electron-vite build && electron-builder --linux",
-    "test": "vitest --watch"
+    "test": "vitest --watch",
+    "icon": "electron-icon-builder --input=./resources/icon.png --output=build/icons --flatten"
   },
   "dependencies": {
     "@ant-design/icons": "5.x",
@@ -27,6 +28,7 @@
     "@electron-toolkit/utils": "^4.0.0",
     "antd": "^5.26.7",
     "axios": "^1.11.0",
+    "electron-log": "^5.4.2",
     "electron-updater": "^6.3.9",
     "react-router": "^7.7.1",
     "react-router-dom": "^7.7.1",
@@ -45,6 +47,7 @@
     "@vitejs/plugin-react": "^4.7.0",
     "electron": "^37.2.3",
     "electron-builder": "^25.1.8",
+    "electron-icon-builder": "^2.0.1",
     "electron-vite": "^4.0.0",
     "eslint": "^9.31.0",
     "eslint-plugin-react": "^7.37.5",
