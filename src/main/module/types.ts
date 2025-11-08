@@ -1,7 +1,11 @@
-import { BrowserWindow } from 'electron'
+import { BaseWindow, BrowserWindow } from 'electron'
 
 // createWindow.ts中新建窗口的选项
 export interface BrowserWindowOptions {
+  // 层级
+  parent?: BaseWindow | undefined // 父窗口
+  modal?: boolean // 是否模态窗口，需要和 parent 一起使用
+
   // 尺寸相关
   width?: number // 窗口宽度
   height?: number // 窗口高度

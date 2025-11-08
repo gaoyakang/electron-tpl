@@ -11,15 +11,20 @@ import {
   app
 } from 'electron'
 import ClipboardManager from './ClipboardManager'
-import { DialogOptionsType, processedSourcesType } from './types'
+import { BrowserWindowOptions, DialogOptionsType, processedSourcesType } from './types'
 import { autoUpdateInit } from './autoUpdater'
 import { createWindow } from './createWindow'
 import { is } from '@electron-toolkit/utils'
 
 // 创建窗口
 function setupCreateWindow(): void {
-  ipcMain.handle('create-window', async (_e, name: string): Promise<string> => {
-    createWindow({ windowName: name })
+  ipcMain.handle('create-window', async (_e, options: BrowserWindowOptions): Promise<string> => {
+    // 找出父窗口实例
+    if (options.modal && !options.parent) {
+      const parentWindow = BrowserWindow.fromWebContents(_e.sender)
+      options.parent = parentWindow as BrowserWindow
+    }
+    createWindow(options)
     return 'create-window success'
   })
 }

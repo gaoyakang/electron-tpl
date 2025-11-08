@@ -1,12 +1,12 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
 import { promises } from 'dns'
-import { DialogOptionsType } from '../main/module/types'
+import { DialogOptionsType, BrowserWindowOptions } from '../main/module/types'
 
 declare global {
   interface Window {
     electron: ElectronAPI
     api: {
-      setupCreateWindow: (name: string) => void // 创建窗口
+      setupCreateWindow: (options: BrowserWindowOptions) => void // 创建窗口
       setupSetWindowSize: (size: { width: number; height: number }) => void // 设置窗口大小
       setupSetWindowPosition: (position: { x: number; y: number }) => void // 设置窗口大小
       setupMaximizeWindow: () => void // 窗口最大化

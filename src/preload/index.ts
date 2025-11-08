@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
 const api = {
-  setupCreateWindow: (name) => ipcRenderer.invoke('create-window', name), // 创建窗口
+  setupCreateWindow: (options) => ipcRenderer.invoke('create-window', options), // 创建窗口
   setupSetWindowSize: (options) => ipcRenderer.invoke('set-window-size', options), // 设置窗口大小
   setupSetWindowPosition: (options) => ipcRenderer.invoke('set-window-position', options), // 设置窗口位置
   setupFocusWindow: () => ipcRenderer.invoke('focus-window'), // 窗口聚焦

@@ -5,7 +5,12 @@ import * as log from 'electron-log'
 function App(): React.JSX.Element {
   const handleMainProcess = async (): Promise<void> => {
     log.info('点击了打开设置窗口')
-    await window.api.setupCreateWindow('settingwin')
+    await window.api.setupCreateWindow({
+      windowName: 'settingwin',
+      width: 200,
+      height: 200,
+      modal: true
+    })
   }
 
   return (
