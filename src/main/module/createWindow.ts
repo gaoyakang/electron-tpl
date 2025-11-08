@@ -17,6 +17,9 @@ export const createWindow = (
 
   // 创建窗口
   let mainWindow = new BrowserWindow({
+    // 层级
+    parent: mergedBrowserWindowOptions.parent,
+    modal: mergedBrowserWindowOptions.modal,
     // 尺寸相关
     width: mergedBrowserWindowOptions.width,
     height: mergedBrowserWindowOptions.height,

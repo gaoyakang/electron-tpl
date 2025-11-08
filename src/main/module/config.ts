@@ -21,6 +21,7 @@ export const config = {
       minHeight: 670,
       minWidth: 250,
       show: false,
+      modal: false,
       autoHideMenuBar: true,
       preload: path.join(__dirname, '../preload/index.js'),
       sandbox: false,
