@@ -90,3 +90,17 @@ export interface DialogOptionsType {
     }
   }
 }
+
+// registerIPCEvents.ts中sqlite操作参数配置
+export type SqlOp =
+  | { type: 'insert'; table: string; data: Record<string, any> }
+  | { type: 'delete'; table: string; whereSql: string; whereParams?: any[] }
+  | {
+      type: 'update'
+      table: string
+      setData: Record<string, any>
+      whereSql: string
+      whereParams?: any[]
+    }
+  | { type: 'select'; table: string; whereSql?: string; whereParams?: any[]; columns?: string }
+  | { type: 'selectOne'; table: string; whereSql?: string; whereParams?: any[]; columns?: string }

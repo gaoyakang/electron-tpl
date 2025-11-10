@@ -62,6 +62,17 @@ export const config = {
         },
         { label: 'New Command...' }
       ]
+    },
+    db: {
+      dbFile: path.join(app.getPath('userData'), 'app.db'),
+      initialTables: [
+        `
+    CREATE TABLE IF NOT EXISTS user(
+      id   INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT    NOT NULL,
+      age  INTEGER DEFAULT 18
+    )` // 这是示例表，其他表继续写 …
+      ] // 初始建表语句数组
     }
   },
   prd: {}

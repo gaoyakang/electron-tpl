@@ -2,6 +2,7 @@ import { electronApp, optimizer } from '@electron-toolkit/utils'
 import { app, BrowserWindow, globalShortcut } from 'electron'
 import { createWindow } from '..//module/createWindow'
 import { autoUpdateInit } from '../module/autoUpdater'
+import { BetterSqliteWrapper } from '../module/sqlite3'
 
 // app生命周期
 export const setupAppLifecycle = (): void => {
@@ -27,6 +28,9 @@ export const setupAppLifecycle = (): void => {
   app.on('will-quit', () => {
     // 取消所有快捷键
     globalShortcut.unregisterAll()
+    // 关闭数据库连接
+    const db = (BetterSqliteWrapper as any)['_ins'] as BetterSqliteWrapper | undefined
+    db?.close()
   })
 
   app.on('window-all-closed', () => {

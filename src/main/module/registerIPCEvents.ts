@@ -11,10 +11,11 @@ import {
   app
 } from 'electron'
 import ClipboardManager from './ClipboardManager'
-import { BrowserWindowOptions, DialogOptionsType, processedSourcesType } from './types'
+import { BrowserWindowOptions, DialogOptionsType, processedSourcesType, SqlOp } from './types'
 import { autoUpdateInit } from './autoUpdater'
 import { createWindow } from './createWindow'
 import { is } from '@electron-toolkit/utils'
+import { BetterSqliteWrapper } from './sqlite3'
 
 // 创建窗口
 function setupCreateWindow(): void {
@@ -448,6 +449,26 @@ async function setupGetVersionHandler(): Promise<void> {
   })
 }
 
+// sqlite操作
+async function setupSqliteOperate(): Promise<void> {
+  ipcMain.handle('db', async (_, op: SqlOp) => {
+    const db = BetterSqliteWrapper.ins
+    switch (op.type) {
+      case 'insert':
+        return db.insert(op.table, op.data)
+      case 'delete':
+        return db.delete(op.table, op.whereSql, op.whereParams ?? [])
+      case 'update':
+        return db.update(op.table, op.setData, op.whereSql, op.whereParams ?? [])
+      case 'select':
+        return db.select(op.table, op.whereSql ?? '1=1', op.whereParams ?? [], op.columns ?? '*')
+      case 'selectOne':
+        return db.selectOne(op.table, op.whereSql ?? '1=1', op.whereParams ?? [], op.columns ?? '*')
+      default:
+        throw new Error(`unknown db op: ${(op as any).type}`)
+    }
+  })
+}
 // 注册所有IPC处理器
 export function registerIPCEvents(windowInstance: BrowserWindow): BrowserWindow {
   setupCreateWindow()
@@ -472,5 +493,6 @@ export function registerIPCEvents(windowInstance: BrowserWindow): BrowserWindow 
   setupPurchaseProductHandler() // 应用内购买
   setupAutoUpdateHandler() //自动更新
   setupGetVersionHandler() // 获取应用版本号
+  setupSqliteOperate() // sqlite操作
   return windowInstance
 }

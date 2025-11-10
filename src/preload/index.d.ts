@@ -1,6 +1,6 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
 import { promises } from 'dns'
-import { DialogOptionsType, BrowserWindowOptions } from '../main/module/types'
+import { DialogOptionsType, BrowserWindowOptions, SqlOp } from '../main/module/types'
 
 declare global {
   interface Window {
@@ -36,6 +36,7 @@ declare global {
       purchaseProduct: (productID: string) => boolean // 应用内购买
       autoUpdate: () => void // 自动更新
       getVersion: () => string // 获取应用版本号
+      db: (op: SqlOp) => Promise<any> // sqlite数据库操作
     }
   }
 }

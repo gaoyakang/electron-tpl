@@ -1,5 +1,6 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
+import { SqlOp } from '../main/module/types'
 
 const api = {
   setupCreateWindow: (options) => ipcRenderer.invoke('create-window', options), // 创建窗口
@@ -23,7 +24,8 @@ const api = {
   getPowerMonitorInfo: (options) => ipcRenderer.invoke('power-monitor', options), // powerMonitor相关
   purchaseProduct: (productID) => ipcRenderer.invoke('purchase-product', productID), //  应用内购买
   autoUpdate: () => ipcRenderer.invoke('auto-update'), // 自动更新
-  getVersion: () => ipcRenderer.invoke('get-version') // 获取应用版本号
+  getVersion: () => ipcRenderer.invoke('get-version'), // 获取应用版本号
+  db: (op: SqlOp) => ipcRenderer.invoke('db', op) // sqlite数据库操作
 }
 
 if (process.contextIsolated) {
