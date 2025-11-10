@@ -59,17 +59,23 @@ export const createWindow = (
   ] as WindowEventConfig[])
 
   // 加载内容
+  const query = `winId=${mainWindow.id}` // 传递窗口id给渲染进程，用于后续通信
   if (is.dev) {
     // 开发环境下加载url
     mainWindow.loadURL(
-      process.env['ELECTRON_RENDERER_URL'] + '/' + mergedBrowserWindowOptions.windowName || ''
+      process.env['ELECTRON_RENDERER_URL'] +
+        '/' +
+        mergedBrowserWindowOptions.windowName +
+        '?' +
+        query || ''
     )
     // 开发环境下自动打开 DevTools
     mainWindow.webContents.openDevTools({ mode: 'detach' })
   } else {
     // 生产环境下打开打包的html
     mainWindow.loadFile(
-      join(__dirname, `../renderer/${mergedBrowserWindowOptions.windowName}.html`)
+      join(__dirname, `../renderer/${mergedBrowserWindowOptions.windowName}.html`),
+      { search: query }
     )
   }
 

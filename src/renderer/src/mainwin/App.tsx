@@ -37,6 +37,23 @@ function App(): React.JSX.Element {
     const user = await db.selectOne('user', 'id = ?', [id])
     console.log('查询结果：', user)
   }
+
+  // 3.跨窗口通信示例
+  const handleWin2WinProcess = async (): Promise<void> => {
+    log.info('点击了打开设置窗口')
+    const winId = await window.api.setupCreateWindow({
+      windowName: 'settingwin',
+      width: 200,
+      height: 200,
+      modal: false
+    })
+    // 询问新窗口是否准备好
+    while (!(await window.api.isWindowReady(winId))) {
+      await new Promise((res) => setTimeout(res, 100)) // 100 ms 轮询一次
+    }
+    // 发送跨窗口消息
+    await window.api.win2win(winId, '来自主窗口的数据')
+  }
   return (
     <div data-testid="app-wrapper">
       <div>
@@ -59,6 +76,12 @@ function App(): React.JSX.Element {
         </Button>
         <Button type="primary" onClick={handleMainQueryProcess}>
           查询
+        </Button>
+      </div>
+      <div>
+        <h3>跨窗口通信示例</h3>
+        <Button type="primary" onClick={handleWin2WinProcess}>
+          打开设置窗口
         </Button>
       </div>
     </div>

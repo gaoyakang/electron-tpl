@@ -25,8 +25,10 @@ function setupCreateWindow(): void {
       const parentWindow = BrowserWindow.fromWebContents(_e.sender)
       options.parent = parentWindow as BrowserWindow
     }
-    createWindow(options)
-    return 'create-window success'
+    // 创建窗口
+    const newWindow = createWindow(options)
+    console.log('新窗口创建成功:', newWindow.id)
+    return newWindow.id.toString()
   })
 }
 
@@ -469,6 +471,45 @@ async function setupSqliteOperate(): Promise<void> {
     }
   })
 }
+
+// 跨窗口IPC通信
+async function setupCrossWindowIPCHandler(): Promise<void> {
+  ipcMain.handle('cross-window-message', (_event, payload) => {
+    const { targetWindowId, data } = payload
+    // console.log(`ID: ${targetWindowId} 发来的数据: ${data}`)
+    // 获取所有窗口
+    const allWindows = BrowserWindow.getAllWindows()
+    allWindows.forEach((win) => {
+      console.log('allWindows', win.id + win.title)
+    })
+    // 查找目标窗口
+    const targetWindow = allWindows.find((win) => win.id.toString() === targetWindowId)
+    console.log('targetWindow', targetWindow!.id + targetWindow!.title)
+    if (targetWindow) {
+      // 向目标窗口发送消息
+      targetWindow.webContents.send('cross-window-message', data)
+    } else {
+      return 'target-window-not-found'
+    }
+  })
+}
+
+const readyWinIds = new Set<string>() // 已经准备好的窗口id集合
+// 查询主进程当前窗口内容是否已准备好
+async function setupIsWindowReadyHandler(): Promise<void> {
+  ipcMain.handle('is-window-ready', (_event, winId: string) => {
+    console.log('is-window-ready=====', winId)
+    return readyWinIds.has(winId)
+  })
+}
+// 通知主进程窗口内部渲染的内容已准备好
+async function setupSignalWindowReadyHandler(): Promise<void> {
+  ipcMain.handle('window-ready', (_event, winId: string) => {
+    console.log('window-ready=====', winId)
+    readyWinIds.add(winId)
+    return true
+  })
+}
 // 注册所有IPC处理器
 export function registerIPCEvents(windowInstance: BrowserWindow): BrowserWindow {
   setupCreateWindow()
@@ -494,5 +535,8 @@ export function registerIPCEvents(windowInstance: BrowserWindow): BrowserWindow 
   setupAutoUpdateHandler() //自动更新
   setupGetVersionHandler() // 获取应用版本号
   setupSqliteOperate() // sqlite操作
+  setupCrossWindowIPCHandler() // 跨窗口IPC通信
+  setupIsWindowReadyHandler() // 查询主进程当前窗口内容是否已准备好
+  setupSignalWindowReadyHandler() // 通知主进程窗口内部渲染的内容已准备好
   return windowInstance
 }

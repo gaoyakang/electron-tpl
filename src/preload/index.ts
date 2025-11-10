@@ -25,7 +25,14 @@ const api = {
   purchaseProduct: (productID) => ipcRenderer.invoke('purchase-product', productID), //  应用内购买
   autoUpdate: () => ipcRenderer.invoke('auto-update'), // 自动更新
   getVersion: () => ipcRenderer.invoke('get-version'), // 获取应用版本号
-  db: (op: SqlOp) => ipcRenderer.invoke('db', op) // sqlite数据库操作
+  db: (op: SqlOp) => ipcRenderer.invoke('db', op), // sqlite数据库操作
+  win2win: (targetWindowId: string, data: string) =>
+    ipcRenderer.invoke('cross-window-message', { targetWindowId, data }), // 跨窗口IPC通信
+  onCrossWindowMessage: (cb: (data: string) => void) => {
+    ipcRenderer.on('cross-window-message', (_, data) => cb(data))
+  },
+  isWindowReady: (winId: string) => ipcRenderer.invoke('is-window-ready', winId), // 查询主进程当前窗口内容是否已准备好
+  signalWindowReady: (winId: string) => ipcRenderer.invoke('window-ready', winId) // 通知主进程窗口内部渲染的内容已准备好
 }
 
 if (process.contextIsolated) {

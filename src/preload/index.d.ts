@@ -6,7 +6,7 @@ declare global {
   interface Window {
     electron: ElectronAPI
     api: {
-      setupCreateWindow: (options: BrowserWindowOptions) => void // 创建窗口
+      setupCreateWindow: (options: BrowserWindowOptions) => string // 创建窗口
       setupSetWindowSize: (size: { width: number; height: number }) => void // 设置窗口大小
       setupSetWindowPosition: (position: { x: number; y: number }) => void // 设置窗口大小
       setupMaximizeWindow: () => void // 窗口最大化
@@ -37,6 +37,10 @@ declare global {
       autoUpdate: () => void // 自动更新
       getVersion: () => string // 获取应用版本号
       db: (op: SqlOp) => Promise<any> // sqlite数据库操作
+      win2win: (targetWindowId: string, data: string) => void // 跨窗口IPC通信
+      onCrossWindowMessage: (cb: (data: string) => void) => void // 跨窗口IPC通信监听
+      isWindowReady: (winId: string) => boolean // 查询主进程当前窗口内容是否已准备好
+      signalWindowReady: (winId: string) => boolean // 通知主进程窗口内部渲染的内容已准备好
     }
   }
 }
