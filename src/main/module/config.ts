@@ -30,7 +30,9 @@ export const config = {
       transparent: false, // 设置窗口透明
       backgroundColor: '#00000000', // 设置背景颜色为透明
       dev: true, // 默认开发环境
-      windowName: 'mainwin' // 默认的窗口名称
+      windowName: 'mainwin', // 默认的窗口名称
+      frame: true, // 显示窗口边框和标题栏
+      hasShadow: true // 显示窗口阴影
     },
     shortcut: {
       // 如果要新增全局快捷键需要在src/main/module/shortcut.ts定义

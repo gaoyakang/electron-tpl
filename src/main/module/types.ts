@@ -20,6 +20,8 @@ export interface BrowserWindowOptions {
   rendererUrl?: string // 渲染内容的url
   transparent?: boolean // 是否透明
   backgroundColor?: string // 背景色
+  frame?: boolean // 是否显示窗口边框和标题栏
+  hasShadow?: boolean // 是否显示窗口阴影
 
   // 权限相关
   preload?: string // preload文件地址

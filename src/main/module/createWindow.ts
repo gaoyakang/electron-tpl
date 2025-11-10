@@ -32,6 +32,8 @@ export const createWindow = (
     autoHideMenuBar: mergedBrowserWindowOptions.autoHideMenuBar,
     transparent: mergedBrowserWindowOptions.transparent,
     backgroundColor: mergedBrowserWindowOptions.backgroundColor,
+    frame: mergedBrowserWindowOptions.frame,
+    hasShadow: mergedBrowserWindowOptions.hasShadow,
     // titleBarStyle: 'hidden', // 隐藏默认标题栏，其余不可拖动，可添加app-region: drag 样式重新定位窗口
     // 平台相关
     ...(process.platform === 'linux' ? { icon } : {}),
