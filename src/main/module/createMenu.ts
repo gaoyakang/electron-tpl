@@ -27,6 +27,12 @@ function createWindowMenu(windowInstance: BrowserWindow): void {
           label: '强制刷新',
           accelerator: 'CmdOrCtrl+R',
           role: 'forceReload'
+        },
+        {
+          // 退出
+          label: '退出',
+          accelerator: 'CmdOrCtrl+Q',
+          role: 'quit'
         }
       ]
     }
@@ -82,10 +88,18 @@ async function createTrayMenu(): Promise<void> {
   const tray = new Tray(trayIcon)
   const contextMenu = Menu.buildFromTemplate([
     { label: 'Item1', type: 'radio', click: () => handleMenuItemClick(1) },
-    { label: 'Item3', type: 'radio', checked: true }
+    { label: 'Item2', type: 'radio', checked: true },
+    { label: '退出', type: 'radio', click: () => handleMenuItemQuitClick(3) }
   ])
   tray.setToolTip(config.dev.menu.trayMenu.toolTip)
   tray.setContextMenu(contextMenu)
+}
+
+// 处理菜单项点击退出事件的函数
+function handleMenuItemQuitClick(menuItemIndex): void {
+  console.log(`Item ${menuItemIndex} clicked`)
+  // 在这里添加你想要执行的代码
+  app.quit()
 }
 // 处理菜单项点击事件的函数
 function handleMenuItemClick(menuItemIndex): void {
