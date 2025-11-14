@@ -12,7 +12,7 @@
   - 2.创建所需单文件文件：renderer/src/settingwin.html且配置script标签和enderer/src/settingwin
   - 3.配置vite打包入口：详见`package.json > renderer > build > rollupOptions > input`
 - 5.dll调用：❌
-- 6.sqlite3数据库：✅
+- 6.sqlite3数据库：✅默认数据在/Users/gyk/Library/Application Support/xxx
 
 
 ## 2.启动项目
